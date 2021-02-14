@@ -1,0 +1,37 @@
+body{
+  background-color: rgba(228,140,140,0.75);
+}
+.valentine{
+  margin: 50px;
+}
+p{
+  border-right: 5px solid rgba(228,140,140,0.75);
+  color: rgba(255,255,255,0.7);
+  font-size: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Source Code Pro',sans-serif;
+  animation: animated-text 4s linear 1s 1 normal both,
+  animated-cursor 600ms linear infinite;
+}
+img[src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png']{
+  width: 40px;
+  height: 40px;
+}
+@keyframes animated-text {
+  from{
+    width: 0;
+  }
+  to{
+    width: 480px;
+  }
+}
+
+@keyframes animated-cursor {
+  from{
+    border-right-color: rgba(255,255,255,0.75);
+  }
+  to{
+    border-right-color: transparent;
+  }
+}
