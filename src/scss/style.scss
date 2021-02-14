@@ -1,58 +1,75 @@
-$light-gray:lightgray;
-$light-white:#f3f6f9;
-$light-steelblue:lightsteelblue;
-$steel-gray:#d3d9de;
+*{box-sizing: border-box;margin: 0;padding: 0;}
+body{font-family: Arial,sans-serif,Helvetica;background-color: rgba(228,140,140,0.75);}
+img{vertical-align:top;}
+ul li{list-style:none;}
+a,a:visited{text-decoration:none;}
+a:hover{text-decoration:none;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit;}
 
-*{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.box{
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
-body{
-  background: $light-steelblue;
+.message{
+  transition:.5s linear;
+  opacity: 0;
+  height: 150px;
+  background-color: deeppink;
+  border-radius: 2px;
+  order: 1;
+}
+.message__text{
+  position: relative;
+  top: 40%;
+
+}
+.button{
+  order: 2;
+}
+.wrapper{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 .container{
-
+  max-width: 1180px;
 }
-
-.search{
-  border-radius: 8px;
+.valentine{
+  margin: 50px;
+}
+p{
+  border-right: 5px solid rgba(228,140,140,0.75);
+  color: rgba(255,255,255,0.7);
+  font-size: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Source Code Pro',sans-serif;
+  animation: animated-text 4s linear 1s 1 normal both,
+      animated-cursor 600ms linear infinite;
+}
+img[src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png']{
+  width: 40px;
   height: 40px;
-  background-color: $light-gray;
-  border: 2px solid $light-white;
-  width: 30%;
-  outline: none;
 }
-.search:focus{
-  transition-duration: 0.5s;
-  background-color: $light-white;
-}
-
-.search-wrapper{
-  display: flex;
-  justify-content: center;
-}
-
-.search-result{
-  position: relative;
-  top: 5px;
-  margin: 0 auto;
-  border-radius: 5px;
-  width: 30%;
-  background-color: $light-white;
-  box-shadow: 0 1px 0 0 $steel-gray;
-  li{
-    list-style: none;
+@keyframes animated-text {
+  from{
+    width: 0;
+  }
+  to{
+    width: 535px;
   }
 }
 
-.search-result__city{
-  font-family: 'MuseoSansCyrl',Arial,Helvetica,sans-serif;
-  padding: 5px;
-  font-size: 20px;
+@keyframes animated-cursor {
+  from{
+    border-right-color: rgba(255,255,255,0.75);
+  }
+  to{
+    border-right-color: transparent;
+  }
 }
 
-.search-result__city:hover{
-  cursor: pointer;
-  background-color: $steel-gray;
-}
+

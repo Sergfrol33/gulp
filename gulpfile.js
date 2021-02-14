@@ -12,7 +12,10 @@ const {src,dest,series,parallel,watch} = require('gulp'),
     cleanCss = require('gulp-clean-css'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify-es').default,
-    connect = require('gulp-connect')
+    connect = require('gulp-connect'),
+    imagemin = require('gulp-imagemin'),
+    webp = require('gulp-webp'),
+    webpHtml = require('gulp-webp-html')
 
 //пути для source и project версии
 const path = {
@@ -20,16 +23,19 @@ const path = {
         html: `${PROJECT_FOLDER}/` ,
         css: `${PROJECT_FOLDER}/css/`  ,
         js: `${PROJECT_FOLDER}/js/`,
+        img: `${PROJECT_FOLDER}/img/`,
     },
     src: {
         html:[`${SOURCE_FOLDER}/*.html`,`!${SOURCE_FOLDER}/_*.html`],
         css:`${SOURCE_FOLDER}/scss/style.scss`,
         js: `${SOURCE_FOLDER}/js/script.js`,
+        img: `${SOURCE_FOLDER}/img/**/*.{png,jpg,svg,gif,ico,webp}`
     },
     watch: {
         html:`${SOURCE_FOLDER}/**/*.html`,
         css:`${SOURCE_FOLDER}/scss/**/*.scss`,
         js: `${SOURCE_FOLDER}/js/**/*.js`,
+        img: `${SOURCE_FOLDER}/img/**/*/.{png,jpg,svg,gif,ico,webp}`,
     },
     clean: `./${PROJECT_FOLDER}/`
 }
@@ -73,6 +79,7 @@ const html = () => {
         .pipe(fileInclude())
         .pipe(dest(path.build.html))
         .pipe(browser.stream())
+        .pipe(webpHtml())
 }
 //настройка css-файлов
 const css = () => {
@@ -106,6 +113,24 @@ const js = () => {
         .pipe(dest(path.build.js))
         .pipe(browser.stream())
 }
+const images = () => {
+    return src(path.src.img)
+        .pipe(
+            webp({
+                quality:70
+            })
+        )
+        .pipe(src(path.src.img))
+        .pipe(dest(path.build.img))
+        .pipe(imagemin({
+            progressive:true,
+            svgoPlugins:[{removeViewBox:false}],
+            interlaced:true,
+            optimizationLevel:3
+        }))
+        .pipe(dest(path.build.img))
+        .pipe(browser.stream())
+}
 const clean = () => {
     return del(path.clean)
 }
@@ -114,10 +139,12 @@ const watchFiles = () =>{
     watch([path.watch.html],html)
     watch([path.watch.css],css)
     watch([path.watch.js],js)
+    watch([path.watch.img],images)
 }
-const build = series(clean,parallel(js,css,html,server))//build версия проекта
-const watchExport = parallel(build,watchFiles,/*browserSync*/);
+const build = series(clean,parallel(images,js,css,html,/*server*/))//build версия проекта
+const watchExport = parallel(build,watchFiles,browserSync);
 
+exports.images = images;
 exports.js = js;
 exports.css = css;
 exports.html = html;
