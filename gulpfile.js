@@ -9,6 +9,11 @@ const cssmin = require('gulp-cssmin')
 const webpack = require('webpack')
 const webpackStream = require('webpack-stream')
 const uglify = require('gulp-uglify')
+const sass = require('gulp-sass')
+const postCss = require('gulp-postcss')
+const mqPacker = require('css-mqpacker')
+const argv = require('yargs').argv
+
 
 gulp.task('html', ()=>{
     browserSync.notify('Compilinig HTML')
@@ -19,9 +24,13 @@ gulp.task('html', ()=>{
         .pipe(browserSync.reload({stream: true}))
 })
 gulp.task('css', () =>{
-    return gulp.src('app/css/*.css')
+    return gulp.src(['app/css/*.sass', 'app/css/**/*.sass'])
         .pipe(plumber())
+        .pipe(sass())
         .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'],{cascade: true}))
+        .pipe(postCss([
+            mqPacker({sort: true})
+        ]))
         .pipe(cssmin())
         .pipe(rename({
             suffix: '.min'
@@ -29,7 +38,12 @@ gulp.task('css', () =>{
         .pipe(gulp.dest('dist/css'))
         .pipe(browserSync.stream())
 })
-
+gulp.task('img', () =>{
+    return gulp.src('app/images/**/*.*')
+        .pipe(plumber())
+        .pipe(gulp.dest('dist/images'))
+        .pipe(browserSync.reload({stream: true}))
+})
 gulp.task('js',()=>{
     return gulp.src(['app/js/*.js', 'app/js/**/*.js'])
         .pipe(plumber())
@@ -41,7 +55,7 @@ gulp.task('js',()=>{
                 module: {
                     rules: [
                         {
-                            test: /\.js/,
+                            test: /\.js$/,
                             exclude: /(node_modules)/,
                             loader: 'babel-loader',
                             query:{
@@ -77,9 +91,10 @@ gulp.task('clean', ()=>{
 
 gulp.task('watch', () =>{
     gulp.watch('app/*.pug', gulp.series('html'))
-    gulp.watch('app/css/*.css', gulp.series('css'))
+    gulp.watch(['app/css/*.sass', 'app/css/**/*.sass'], gulp.series('css'))
     gulp.watch(['app/js/*.js',  'app/js/**/*.js'], gulp.series('js'))
+    gulp.watch('app/images/**/*.*',gulp.series('img'))
 })
-gulp.task('create', gulp.series('clean', gulp.parallel('html','css', 'js')))
+gulp.task('create', gulp.series('clean', gulp.parallel('html','css', 'js', 'img')))
 gulp.task('default', gulp.series('create', gulp.parallel('server', 'watch')))
 
