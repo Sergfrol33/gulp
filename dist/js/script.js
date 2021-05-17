@@ -93,40 +93,43 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var links = document.querySelectorAll('.landing__link');
-var content = document.querySelectorAll('.landing__content');
-links.forEach(function (link, index) {
-  link.addEventListener('click', function (e) {
-    links.forEach(function (i) {
-      return i.classList.remove('landing__link--active');
-    });
-    link.classList.toggle('landing__link--active');
-    content.forEach(function (i) {
-      i.classList.remove('landing__content--active');
-      i.classList.remove('landing__content--opacity');
-    });
+window.addEventListener('DOMContentLoaded', function () {
+  var links = document.querySelectorAll('.landing__link');
+  var content = document.querySelectorAll('.landing__content');
+  var time = 300;
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      links.forEach(function (i) {
+        return i.classList.remove('landing__link--active');
+      });
+      link.classList.toggle('landing__link--active');
+      content.forEach(function (i) {
+        i.classList.remove('landing__content--active');
+        i.classList.remove('landing__content--opacity');
+      });
 
-    if (e.currentTarget.id === 'main') {
-      content[0].classList.add('landing__content--active');
-      setTimeout(function () {
-        content[0].classList.add('landing__content--opacity');
-      }, 200);
-    } else if (e.currentTarget.id === 'about') {
-      content[1].classList.add('landing__content--active');
-      setTimeout(function () {
-        content[1].classList.add('landing__content--opacity');
-      }, 200);
-    } else if (e.currentTarget.id === 'usligi') {
-      content[2].classList.add('landing__content--active');
-      setTimeout(function () {
-        content[2].classList.toggle('landing__content--opacity');
-      }, 200);
-    } else if (e.currentTarget.id === 'contacts') {
-      content[3].classList.toggle('landing__content--active');
-      setTimeout(function () {
-        content[3].classList.toggle('landing__content--opacity');
-      }, 200);
-    }
+      if (e.currentTarget.id === links[0].id) {
+        content[0].classList.add('landing__content--active');
+        setTimeout(function () {
+          content[0].classList.add('landing__content--opacity');
+        }, time);
+      } else if (e.currentTarget.id === links[1].id) {
+        content[1].classList.add('landing__content--active');
+        setTimeout(function () {
+          content[1].classList.add('landing__content--opacity');
+        }, time);
+      } else if (e.currentTarget.id === links[2].id) {
+        content[2].classList.add('landing__content--active');
+        setTimeout(function () {
+          content[2].classList.toggle('landing__content--opacity');
+        }, time);
+      } else if (e.currentTarget.id === links[3].id) {
+        content[3].classList.toggle('landing__content--active');
+        setTimeout(function () {
+          content[3].classList.toggle('landing__content--opacity');
+        }, time);
+      }
+    });
   });
 });
 

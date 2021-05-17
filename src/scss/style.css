@@ -453,6 +453,12 @@ template {
 .landing__content--opacity {
   opacity: 1;
 }
+.landing__content--margin-top-small {
+  margin-top: 30px;
+}
+.landing__content--margin-top-big {
+  margin-top: 48px;
+}
 
 *, *:before, *:after {
   box-sizing: border-box;

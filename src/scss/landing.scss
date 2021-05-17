@@ -72,10 +72,15 @@
     transition: all .3s;
     &--active{
       display: block;
-
     }
     &--opacity{
       opacity: 1;
+    }
+    &--margin-top-small{
+      margin-top: 30px;
+    }
+    &--margin-top-big{
+      margin-top: 48px;
     }
   }
 }
