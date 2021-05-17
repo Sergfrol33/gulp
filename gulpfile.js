@@ -15,7 +15,15 @@ const {src,dest,series,parallel,watch} = require('gulp'),
     connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     webp = require('gulp-webp'),
-    webpHtml = require('gulp-webp-html')
+    webpHtml = require('gulp-webp-html'),
+    webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
+    argv = require('yargs').argv,
+    ttf2woff = require('gulp-ttf2woff'),
+    ttf2woff2 = require('gulp-ttf2woff2'),
+    fonter = require('gulp-fonter'),
+    pug = require('gulp-pug')
+
 
 //пути для source и project версии
 const path = {
@@ -24,15 +32,17 @@ const path = {
         css: `${PROJECT_FOLDER}/css/`  ,
         js: `${PROJECT_FOLDER}/js/`,
         img: `${PROJECT_FOLDER}/img/`,
+        fonts: `${PROJECT_FOLDER}/fonts/`,
     },
     src: {
-        html:[`${SOURCE_FOLDER}/*.html`,`!${SOURCE_FOLDER}/_*.html`],
+        html:[`${SOURCE_FOLDER}/*.pug`,`!${SOURCE_FOLDER}/_*.pug`],
         css:`${SOURCE_FOLDER}/scss/style.scss`,
         js: `${SOURCE_FOLDER}/js/script.js`,
-        img: `${SOURCE_FOLDER}/img/**/*.{png,jpg,svg,gif,ico,webp}`
+        img: `${SOURCE_FOLDER}/img/**/*.{png,jpg,svg,gif,ico,webp}`,
+        fonts: `${SOURCE_FOLDER}/fonts/*.{ttf,woff,woff2}`,
     },
     watch: {
-        html:`${SOURCE_FOLDER}/**/*.html`,
+        html:`${SOURCE_FOLDER}/**/*.pug`,
         css:`${SOURCE_FOLDER}/scss/**/*.scss`,
         js: `${SOURCE_FOLDER}/js/**/*.js`,
         img: `${SOURCE_FOLDER}/img/**/*/.{png,jpg,svg,gif,ico,webp}`,
@@ -77,9 +87,11 @@ const browserSync = (params) =>{
 const html = () => {
     return src(path.src.html)
         .pipe(fileInclude())
+        .pipe(pug())
         .pipe(dest(path.build.html))
         .pipe(browser.stream())
         .pipe(webpHtml())
+
 }
 //настройка css-файлов
 const css = () => {
@@ -93,7 +105,6 @@ const css = () => {
                 cascade:true
             })
         )
-        .pipe(dest(path.build.css))
         .pipe(cleanCss())
         .pipe(rename({
             extname:".min.css"
@@ -101,10 +112,37 @@ const css = () => {
         .pipe(dest(path.build.css))
         .pipe(browser.stream())
 }
+
+const fonts = () =>{
+    return src(path.src.fonts)
+        .pipe(dest(path.build.fonts))
+}
+
 //настройка js-файлов
 const js = () => {
     return src(path.src.js)
         .pipe(fileInclude())
+        .pipe(webpackStream({
+            output: {
+                filename:'script.js',
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.(js)$/,
+                        exclude: /(node_modules)/,
+                        use: {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: ['@babel/preset-env']
+                            }
+                        }
+                    }
+                ]
+            },
+            mode: argv.production ? 'production' : 'development',
+            devtool: 'none'
+        }))
         .pipe(dest(path.build.js))
         .pipe(uglify())
         .pipe(rename({
@@ -113,6 +151,7 @@ const js = () => {
         .pipe(dest(path.build.js))
         .pipe(browser.stream())
 }
+
 const images = () => {
     return src(path.src.img)
         .pipe(
@@ -134,6 +173,7 @@ const images = () => {
 const clean = () => {
     return del(path.clean)
 }
+
 //отслеживание изменений в файлах
 const watchFiles = () =>{
     watch([path.watch.html],html)
@@ -141,9 +181,10 @@ const watchFiles = () =>{
     watch([path.watch.js],js)
     watch([path.watch.img],images)
 }
-const build = series(clean,parallel(images,js,css,html,/*server*/))//build версия проекта
+const build = series(clean,parallel(images,js,css,html,fonts))//build версия проекта
 const watchExport = parallel(build,watchFiles,browserSync);
 
+exports.fonts = fonts;
 exports.images = images;
 exports.js = js;
 exports.css = css;
