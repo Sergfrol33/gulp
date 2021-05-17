@@ -29,6 +29,7 @@ gulp.task('css', () =>{
         .pipe(gulp.dest('dist/css'))
         .pipe(browserSync.stream())
 })
+
 gulp.task('js',()=>{
     return gulp.src(['app/js/*.js', 'app/js/**/*.js'])
         .pipe(plumber())
@@ -61,6 +62,7 @@ gulp.task('js',()=>{
         .pipe(gulp.dest('dist/js'))
         .pipe(browserSync.stream())
 })
+
 gulp.task('server', () =>{
     browserSync({
         server:{
