@@ -16,12 +16,43 @@ html(lang="ru")
                     .landing__top-title Дом вашей мечты
                     .landing__top-text Дом там, где сердце. Мы поможем вам и вашей компании найти место, где вы будете чувствовать себя дома. Покупка или продажа — мы то, что вам нужно. Дом там, где сердце. Мы поможем вам и вашей компании найти место, где вы будете чувствовать себя дома.
                 nav.landing__nav
-                    a(id="main").landing__link.landing__link--active Главная
-                    a(id="about").landing__link О нас
-                    a(id="usligi").landing__link Услуги
-                    a(id="contacts").landing__link Контакты
+                    .landing__nav-row
+                        a(id="main").landing__link.landing__link--active Главная
+                        a(id="about").landing__link О нас
+                        a(id="usligi").landing__link Услуги
+                        a(id="contacts").landing__link Контакты
                 .landing__content.landing__content--active.landing__content--opacity.landing__content--margin-top-big
-                    .container 1
+                    .container
+                        .landing__content-title Популярные предложения:
+                        .main-content
+                            .main-content__row
+                                .main-content__block
+                                    .main-content__inner
+                                        img(src="img/photo-1.webp").main-content__circle-photo
+                                        .main-content__text
+                                            span.main-content__number 01.
+                                            span  Коммерчиская недвижимость
+                                        .main-content__inner-button
+                                            span.main-content__button-text Узнать больше
+
+                                .main-content__block
+                                    .main-content__inner
+                                        img(src="img/photo-1.webp").main-content__circle-photo
+                                        .main-content__text
+                                            span.main-content__number 02.
+                                            span 2 этажа в аренду под офис
+                                        .main-content__inner-button
+                                            span.main-content__button-text Узнать больше
+
+                                .main-content__block
+                                    .main-content__inner
+                                        img(src="img/photo-1.webp").main-content__circle-photo
+                                        .main-content__text
+                                            span.main-content__number 03.
+                                            span Аренда квартир в центр города
+                                        .main-content__inner-button
+                                            span.main-content__button-text Узнать больше
+
                 .landing__content.landing__content--margin-top-small
                     .container 2
                 .landing__content.landing__content--margin-top-small
@@ -31,4 +62,8 @@ html(lang="ru")
 
 
 
+            footer.footer
+                .footer__row
+                    .footer__text © 2023 «Недвижимость»
+                    div 123
     script(type="text/javascript" src="js/script.js")

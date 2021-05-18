@@ -1,100 +1,169 @@
-const gulp = require('gulp')
-const browserSync = require('browser-sync')
-const autoprefixer = require('gulp-autoprefixer')
-const plumber = require('gulp-plumber')
-const pug = require('gulp-pug')
-const del = require('del')
-const rename = require('gulp-rename')
-const cssmin = require('gulp-cssmin')
-const webpack = require('webpack')
-const webpackStream = require('webpack-stream')
-const uglify = require('gulp-uglify')
-const sass = require('gulp-sass')
-const postCss = require('gulp-postcss')
-const mqPacker = require('css-mqpacker')
-const argv = require('yargs').argv
+
+const PROJECT_FOLDER = 'dist';
+const SOURCE_FOLDER = 'src';
+
+//подключение модулей для работы
+const {src,dest,series,parallel,watch} = require('gulp'),
+    browser = require('browser-sync').create(),
+    fileInclude = require('gulp-file-include'),
+    del = require('del'),
+    scss = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
+    cleanCss = require('gulp-clean-css'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify-es').default,
+    connect = require('gulp-connect'),
+    imagemin = require('gulp-imagemin'),
+    webp = require('gulp-webp'),
+    webpHtml = require('gulp-webp-html'),
+    webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
+    argv = require('yargs').argv,
+    pug = require('gulp-pug')
 
 
-gulp.task('html', ()=>{
-    browserSync.notify('Compilinig HTML')
-    return gulp.src('app/*.pug')
-        .pipe(plumber())
+//пути для source и project версии
+const path = {
+    build: {
+        html: `${PROJECT_FOLDER}/` ,
+        css: `${PROJECT_FOLDER}/css/`  ,
+        js: `${PROJECT_FOLDER}/js/`,
+        img: `${PROJECT_FOLDER}/img/`,
+        fonts: `${PROJECT_FOLDER}/fonts/`,
+    },
+    src: {
+        html:[`${SOURCE_FOLDER}/*.pug`,`!${SOURCE_FOLDER}/_*.pug`],
+        css:`${SOURCE_FOLDER}/scss/style.scss`,
+        js: `${SOURCE_FOLDER}/js/script.js`,
+        img: `${SOURCE_FOLDER}/img/**/*.{png,jpg,svg,gif,ico,webp}`,
+        fonts: `${SOURCE_FOLDER}/fonts/*.{ttf,woff,woff2}`,
+    },
+    watch: {
+        html:`${SOURCE_FOLDER}/**/*.pug`,
+        css:`${SOURCE_FOLDER}/scss/**/*.scss`,
+        js: `${SOURCE_FOLDER}/js/**/*.js`,
+        img: `${SOURCE_FOLDER}/img/**/*/.{png,jpg,svg,gif,ico,webp}`,
+    },
+    clean: `./${PROJECT_FOLDER}/`
+}
+
+//фунция перезагрузки страницы при изменениях
+const browserSync = (params) =>{
+    browser.init({
+        server:{
+            baseDir: './' + PROJECT_FOLDER + '/'
+        },
+        port:3000,
+        notify:false,
+    })
+}
+
+//настройка html-файлов
+const html = () => {
+    return src(path.src.html)
+        .pipe(fileInclude())
         .pipe(pug())
-        .pipe(gulp.dest('dist/'))
-        .pipe(browserSync.reload({stream: true}))
-})
-gulp.task('css', () =>{
-    return gulp.src(['app/css/*.sass', 'app/css/**/*.sass'])
-        .pipe(plumber())
-        .pipe(sass())
-        .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'],{cascade: true}))
-        .pipe(postCss([
-            mqPacker({sort: true})
-        ]))
-        .pipe(cssmin())
-        .pipe(rename({
-            suffix: '.min'
+        .pipe(dest(path.build.html))
+        .pipe(browser.stream())
+        .pipe(webpHtml())
+
+}
+//настройка css-файлов
+const css = () => {
+    return src(path.src.css)
+        .pipe(scss({
+            outputStyle:'expanded'
         }))
-        .pipe(gulp.dest('dist/css'))
-        .pipe(browserSync.stream())
-})
-gulp.task('img', () =>{
-    return gulp.src('app/images/**/*.*')
-        .pipe(plumber())
-        .pipe(gulp.dest('dist/images'))
-        .pipe(browserSync.reload({stream: true}))
-})
-gulp.task('js',()=>{
-    return gulp.src(['app/js/*.js', 'app/js/**/*.js'])
-        .pipe(plumber())
-        .pipe(webpackStream(
-            module.exports = {
-                output:{
-                    filename: 'bundle.js'
-                },
-                module: {
-                    rules: [
-                        {
-                            test: /\.js$/,
-                            exclude: /(node_modules)/,
+        .pipe(
+            autoprefixer({
+                overrideBrowserslist:['last 5 versions'],
+                cascade:true
+            })
+        )
+        .pipe(cleanCss())
+        .pipe(rename({
+            extname:".min.css"
+        }))
+        .pipe(dest(path.build.css))
+        .pipe(browser.stream())
+}
+
+const fonts = () =>{
+    return src(path.src.fonts)
+        .pipe(dest(path.build.fonts))
+}
+
+//настройка js-файлов
+const js = () => {
+    return src(path.src.js)
+        .pipe(fileInclude())
+        .pipe(webpackStream({
+            output: {
+                filename:'script.js',
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.(js)$/,
+                        exclude: /(node_modules)/,
+                        use: {
                             loader: 'babel-loader',
-                            query:{
-                                presets: [
-                                    ['latest',{modules: false}]
-                                ]
+                            options: {
+                                presets: ['@babel/preset-env']
                             }
                         }
-                    ]
-                },
-                mode: 'development',
-            }
-        ), webpack)
+                    }
+                ]
+            },
+            mode: argv.production ? 'production' : 'development',
+            devtool: 'none'
+        }))
+        .pipe(dest(path.build.js))
         .pipe(uglify())
         .pipe(rename({
-            extname: ".min.js"
+            extname:".min.js"
         }))
-        .pipe(gulp.dest('dist/js'))
-        .pipe(browserSync.stream())
-})
+        .pipe(dest(path.build.js))
+        .pipe(browser.stream())
+}
 
-gulp.task('server', () =>{
-    browserSync({
-        server:{
-            baseDir: 'dist'
-        },
-        notify: true
-    })
-})
-gulp.task('clean', ()=>{
-    return del('dist/*')
-})
+const images = () => {
+    return src(path.src.img)
+        .pipe(
+            webp({
+                quality:70
+            })
+        )
+        .pipe(src(path.src.img))
+        .pipe(dest(path.build.img))
+        .pipe(imagemin({
+            progressive:true,
+            svgoPlugins:[{removeViewBox:false}],
+            interlaced:true,
+            optimizationLevel:3
+        }))
+        .pipe(dest(path.build.img))
+        .pipe(browser.stream())
+}
+const clean = () => {
+    return del(path.clean)
+}
 
-gulp.task('watch', () =>{
-    gulp.watch('app/*.pug', gulp.series('html'))
-    gulp.watch(['app/css/*.sass', 'app/css/**/*.sass'], gulp.series('css'))
-    gulp.watch(['app/js/*.js',  'app/js/**/*.js'], gulp.series('js'))
-    gulp.watch('app/images/**/*.*',gulp.series('img'))
-})
-gulp.task('create', gulp.series('clean', gulp.parallel('html','css', 'js', 'img')))
-gulp.task('default', gulp.series('create', gulp.parallel('server', 'watch')))
+//отслеживание изменений в файлах
+const watchFiles = () =>{
+    watch([path.watch.html],html)
+    watch([path.watch.css],css)
+    watch([path.watch.js],js)
+    watch([path.watch.img],images)
+}
+const build = series(clean,parallel(images,js,css,html,fonts))//build версия проекта
+const watchExport = parallel(build,watchFiles,browserSync);
 
+exports.fonts = fonts;
+exports.images = images;
+exports.js = js;
+exports.css = css;
+exports.html = html;
+exports.build = build;
+exports.watch = watchExport;
+exports.default = watchExport;
