@@ -1,4 +1,3 @@
-
 const PROJECT_FOLDER = 'dist';
 const SOURCE_FOLDER = 'src';
 
@@ -12,11 +11,9 @@ const {src,dest,series,parallel,watch} = require('gulp'),
     cleanCss = require('gulp-clean-css'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify-es').default,
-    connect = require('gulp-connect'),
     imagemin = require('gulp-imagemin'),
     webp = require('gulp-webp'),
     webpHtml = require('gulp-webp-html'),
-    webpack = require('webpack'),
     webpackStream = require('webpack-stream'),
     argv = require('yargs').argv,
     pug = require('gulp-pug')
