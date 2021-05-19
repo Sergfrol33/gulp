@@ -95,7 +95,7 @@ const fonts = () =>{
 
 //настройка js-файлов
 const js = () => {
-    return src(path.src.js)
+    return src([path.src.js, `${SOURCE_FOLDER}/js/**/*.js`])
         .pipe(fileInclude())
         .pipe(webpackStream({
             output: {
@@ -153,7 +153,7 @@ const clean = () => {
 const watchFiles = () =>{
     watch([path.watch.html],html)
     watch([path.watch.css],css)
-    watch([path.watch.js],js)
+    watch([path.src.js, `${SOURCE_FOLDER}/js/**/*.js`],js)
     watch([path.watch.img],images)
 }
 const build = series(clean,parallel(images,js,css,html,fonts))//build версия проекта

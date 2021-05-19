@@ -81,15 +81,15 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/script.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/js/script.js":
-/*!**************************!*\
-  !*** ./src/js/script.js ***!
-  \**************************/
+/***/ "./src/js/block/main-block.js":
+/*!************************************!*\
+  !*** ./src/js/block/main-block.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -187,6 +187,34 @@ window.addEventListener('DOMContentLoaded', function () {
   var content = new Content(links, contentBlock);
   content.init();
 });
+
+/***/ }),
+
+/***/ "./src/js/script.js":
+/*!**************************!*\
+  !*** ./src/js/script.js ***!
+  \**************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _block_main_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./block/main-block */ "./src/js/block/main-block.js");
+/* harmony import */ var _block_main_block__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_block_main_block__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/***/ }),
+
+/***/ 0:
+/*!*************************************************************!*\
+  !*** multi ./src/js/script.js ./src/js/block/main-block.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! C:\projects\layout\src\js\script.js */"./src/js/script.js");
+module.exports = __webpack_require__(/*! C:\projects\layout\src\js\block\main-block.js */"./src/js/block/main-block.js");
+
 
 /***/ })
 
