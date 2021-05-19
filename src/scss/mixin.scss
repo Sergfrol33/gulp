@@ -10,3 +10,15 @@
   font-family: 'Open Sans',sans-serif;
   font-weight: normal;
 }
+@mixin block-title($marginTop,$marginLeftRight, $marginBottom, $fontSize: 26px){
+  font-family: 'Open Sans',sans-serif;
+  font-weight: bold;
+  font-size: $fontSize;
+  color: rgba(24,25,25,1);
+  margin: $marginTop $marginLeftRight $marginBottom;
+}
+@mixin borderPhoto($borderRadius){
+  display: block;
+  border-radius: $borderRadius;
+  border: 5px solid #fff;
+}

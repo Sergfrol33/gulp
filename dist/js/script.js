@@ -93,44 +93,99 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 window.addEventListener('DOMContentLoaded', function () {
   var links = document.querySelectorAll('.landing__link');
-  var content = document.querySelectorAll('.landing__content');
-  var time = 300;
-  links.forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      links.forEach(function (i) {
-        return i.classList.remove('landing__link--active');
-      });
-      link.classList.toggle('landing__link--active');
-      content.forEach(function (i) {
-        i.classList.remove('landing__content--active');
-        i.classList.remove('landing__content--opacity');
-      });
+  var contentBlock = document.querySelectorAll('.landing__content');
 
-      if (e.currentTarget.id === links[0].id) {
-        content[0].classList.add('landing__content--active');
-        setTimeout(function () {
-          content[0].classList.add('landing__content--opacity');
-        }, time);
-      } else if (e.currentTarget.id === links[1].id) {
-        content[1].classList.add('landing__content--active');
-        setTimeout(function () {
-          content[1].classList.add('landing__content--opacity');
-        }, time);
-      } else if (e.currentTarget.id === links[2].id) {
-        content[2].classList.add('landing__content--active');
-        setTimeout(function () {
-          content[2].classList.toggle('landing__content--opacity');
-        }, time);
-      } else if (e.currentTarget.id === links[3].id) {
-        content[3].classList.toggle('landing__content--active');
-        setTimeout(function () {
-          content[3].classList.toggle('landing__content--opacity');
-        }, time);
+  var Content = /*#__PURE__*/function () {
+    function Content(links, content, time) {
+      _classCallCheck(this, Content);
+
+      this.links = links;
+      this.content = content;
+      this.time = time || 300;
+    }
+
+    _createClass(Content, [{
+      key: "init",
+      value: function init() {
+        var _this = this;
+
+        this.links.forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            _this.links.forEach(function (i) {
+              return i.classList.remove('landing__link--active');
+            });
+
+            link.classList.toggle('landing__link--active');
+
+            _this.content.forEach(function (i) {
+              i.classList.remove('landing__content--active');
+              i.classList.remove('landing__content--opacity');
+            });
+
+            _this.switchContent(e.currentTarget.id);
+          });
+        });
       }
-    });
-  });
+    }, {
+      key: "switchContent",
+      value: function switchContent(id) {
+        var _this2 = this;
+
+        switch (id) {
+          case this.links[0].id:
+            this.content[0].classList.add('landing__content--active');
+            setTimeout(function () {
+              _this2.content[0].classList.add('landing__content--opacity');
+            }, this.time);
+            break;
+
+          case this.links[1].id:
+            this.content[1].classList.add('landing__content--active');
+            setTimeout(function () {
+              _this2.content[1].classList.add('landing__content--opacity');
+            }, this.time);
+            break;
+
+          case this.links[2].id:
+            this.content[2].classList.add('landing__content--active');
+            setTimeout(function () {
+              _this2.content[2].classList.add('landing__content--opacity');
+            }, this.time);
+            break;
+
+          case this.links[3].id:
+            this.content[3].classList.add('landing__content--active');
+            setTimeout(function () {
+              _this2.content[3].classList.add('landing__content--opacity');
+            }, this.time);
+            break;
+
+          default:
+            return;
+        }
+      }
+    }]);
+
+    return Content;
+  }();
+  /* parameters = {
+       links: this.links,
+       content: this.content,
+       time: this.time
+   }
+   this.config = parameters*/
+
+
+  var content = new Content(links, contentBlock);
+  content.init();
 });
 
 /***/ })

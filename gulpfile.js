@@ -35,14 +35,14 @@ const path = {
         html:[`${SOURCE_FOLDER}/*.pug`,`!${SOURCE_FOLDER}/_*.pug`],
         css:`${SOURCE_FOLDER}/scss/style.scss`,
         js: `${SOURCE_FOLDER}/js/script.js`,
-        img: `${SOURCE_FOLDER}/img/**/*.{png,jpg,svg,gif,ico,webp}`,
+        img: `${SOURCE_FOLDER}/img/*`,
         fonts: `${SOURCE_FOLDER}/fonts/*.{ttf,woff,woff2}`,
     },
     watch: {
         html:`${SOURCE_FOLDER}/**/*.pug`,
         css:`${SOURCE_FOLDER}/scss/**/*.scss`,
         js: `${SOURCE_FOLDER}/js/**/*.js`,
-        img: `${SOURCE_FOLDER}/img/**/*/.{png,jpg,svg,gif,ico,webp}`,
+        img: `${SOURCE_FOLDER}/img/*`,
     },
     clean: `./${PROJECT_FOLDER}/`
 }

@@ -6,12 +6,13 @@ html(lang="ru")
         meta(http-equiv="X-UA-Compatible" content="ie=edge")
         title text
         link(rel="stylesheet" href="css/style.min.css")
+        script(defer type="text/javascript" src="js/script.js")
     body
         .wrapper
             main.landing
                 .landing__top
                     .landing__logo
-                        img(src="img/top.webp")
+                        img(src="img/top.webp" alt="Верхнее лого")
                         .landing__logo-text Недвижимость
                     .landing__top-title Дом вашей мечты
                     .landing__top-text Дом там, где сердце. Мы поможем вам и вашей компании найти место, где вы будете чувствовать себя дома. Покупка или продажа — мы то, что вам нужно. Дом там, где сердце. Мы поможем вам и вашей компании найти место, где вы будете чувствовать себя дома.
@@ -25,34 +26,58 @@ html(lang="ru")
                     .container
                         .landing__content-title Популярные предложения:
                         .main-content
-                            .main-content__row
-                                .main-content__block
-                                    .main-content__inner
-                                        img(src="img/photo-1.webp").main-content__circle-photo
-                                        .main-content__text
-                                            span.main-content__number 01.
-                                            span  Коммерчиская недвижимость
-                                        .main-content__inner-button
-                                            span.main-content__button-text Узнать больше
+                                .main-content__top
+                                    .main-content__block
+                                        .main-content__inner
+                                            img(src="img/photo-1.webp" alt="блок").main-content__photo
+                                            .main-content__text
+                                                span.main-content__number 01.
+                                                span  Коммерчиская недвижимость
+                                            .main-content__inner-button
+                                                span.main-content__button-text Узнать больше
 
-                                .main-content__block
-                                    .main-content__inner
-                                        img(src="img/photo-1.webp").main-content__circle-photo
-                                        .main-content__text
-                                            span.main-content__number 02.
-                                            span 2 этажа в аренду под офис
-                                        .main-content__inner-button
-                                            span.main-content__button-text Узнать больше
+                                    .main-content__block
+                                        .main-content__inner
+                                            img(src="img/photo-2.webp" alt="блок").main-content__photo
+                                            .main-content__text
+                                                span.main-content__number 02.
+                                                span 2 этажа в аренду под офис
+                                            .main-content__inner-button
+                                                span.main-content__button-text Узнать больше
 
-                                .main-content__block
-                                    .main-content__inner
-                                        img(src="img/photo-1.webp").main-content__circle-photo
-                                        .main-content__text
-                                            span.main-content__number 03.
-                                            span Аренда квартир в центр города
-                                        .main-content__inner-button
-                                            span.main-content__button-text Узнать больше
+                                    .main-content__block
+                                        .main-content__inner
+                                            img(src="img/photo-3.webp" alt="блок").main-content__photo
+                                            .main-content__text
+                                                span.main-content__number 03.
+                                                span Аренда квартир в центр города
+                                            .main-content__inner-button
+                                                span.main-content__button-text Узнать больше
 
+
+                                .main-content__bottom
+                                    .main-content__about-us
+                                        .main-content__title О нас
+                                        img(src="img/family.webp" alt="О нас").main-content__about-us-photo
+                                        .main-content__info
+                                            .main-content__about-us-title Дом вашей мечты
+                                            span.main-content__about-us-text Мы серьезно относимся к нашему девизу и в течение 25 лет работы находили для вас идеальные помещения для проживания и бизнеса. С нетерпением ждем нашей встречи и возможности найти вам жилье вашей мечты.
+                                        a(href="#").main-content__link узнать больше >
+                                    .main-content__sell
+                                        .main-content__title Продается
+                                        .main-content__sell-row
+                                            .main-content__sell-block
+                                                img(src="img/sell-photo.webp").main-content__sell-photo
+                                                .main-content__info
+                                                    .main-content__about-us-title Коммерческая недвижимость
+                                                    span.main-content__sell-text В сердце города, 3 этажа лучших площадей под коммерческую деятельность. Нажмите здесь, чтобы отредактировать текст и добавить свой. Сделать это просто: Нажмите «Редактировать текст» либо дважды нажмите на сам текст.
+                                                    a(href="#").main-content__link узнать больше >
+                                            .main-content__sell-block
+                                                img(src="img/sell-photo-2.webp").main-content__sell-photo
+                                                .main-content__info
+                                                    .main-content__about-us-title Жилой дом
+                                                    span.main-content__sell-text Забудьте о жизни в пригороде. Дом расположен в 10 минутах езды от центра города, предоставляя при этом все преимущества загородной жизни. Нажмите здесь, чтобы отредактировать текст и добавить свой.
+                                                    a(href="#").main-content__link узнать больше >
                 .landing__content.landing__content--margin-top-small
                     .container 2
                 .landing__content.landing__content--margin-top-small
@@ -66,4 +91,3 @@ html(lang="ru")
                 .footer__row
                     .footer__text © 2023 «Недвижимость»
                     div 123
-    script(type="text/javascript" src="js/script.js")
