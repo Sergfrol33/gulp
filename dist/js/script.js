@@ -86,6 +86,38 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/js/block/contacts.js":
+/*!**********************************!*\
+  !*** ./src/js/block/contacts.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var myMap; // Дождёмся загрузки API и готовности DOM.
+
+ymaps.ready(init);
+
+function init() {
+  // Создание экземпляра карты и его привязка к контейнеру с
+  // заданным id ("map").
+  myMap = new ymaps.Map('map', {
+    // При инициализации карты обязательно нужно указать
+    // её центр и коэффициент масштабирования.
+    center: [55.76, 37.64],
+    // Москва
+    zoom: 10
+  }, {
+    searchControlProvider: 'yandex#search'
+  });
+
+  document.getElementById('destroyButton').onclick = function () {
+    // Для уничтожения используется метод destroy.
+    myMap.destroy();
+  };
+}
+
+/***/ }),
+
 /***/ "./src/js/block/main-block.js":
 /*!************************************!*\
   !*** ./src/js/block/main-block.js ***!
@@ -201,18 +233,22 @@ window.addEventListener('DOMContentLoaded', function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _block_main_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./block/main-block */ "./src/js/block/main-block.js");
 /* harmony import */ var _block_main_block__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_block_main_block__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _block_contacts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./block/contacts */ "./src/js/block/contacts.js");
+/* harmony import */ var _block_contacts__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_block_contacts__WEBPACK_IMPORTED_MODULE_1__);
+
 
 
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./src/js/script.js ./src/js/block/main-block.js ***!
-  \*************************************************************/
+/*!****************************************************************************************!*\
+  !*** multi ./src/js/script.js ./src/js/block/contacts.js ./src/js/block/main-block.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! C:\projects\layout\src\js\script.js */"./src/js/script.js");
+__webpack_require__(/*! C:\projects\layout\src\js\block\contacts.js */"./src/js/block/contacts.js");
 module.exports = __webpack_require__(/*! C:\projects\layout\src\js\block\main-block.js */"./src/js/block/main-block.js");
 
 

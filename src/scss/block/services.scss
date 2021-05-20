@@ -1,0 +1,38 @@
+.services{
+  &__title-text{
+    @include fontRegular;
+    color: #181919;
+    line-height: 1.3;
+    font-size: 1rem;
+  }
+  &__row{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__service{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+    &-title{
+      @include fontBold;
+      font-size: 22px;
+      color: #181919;
+    }
+  }
+  &__img{
+    @include borderPhoto(50%);
+    width: 270px;
+    height: 270px;
+  }
+  &__text{
+    @include fontRegular;
+    font-size: 14px;
+    color: rgba(24, 25, 25, 0.8);
+    line-height: 1.3;
+    margin-left: 4.5rem;
+  }
+}
